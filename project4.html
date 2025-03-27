@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قناتي على يوتيوب | سالم رزق</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            background-color: #1a1a2e;
+            color: #fff;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 6rem 0 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1492619375914-88005aa9e8fb?ixlib=rb-4.0.3') center/cover;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .channel-info {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .channel-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid #00b4d8;
+            margin-bottom: 2rem;
+            box-shadow: 0 0 20px rgba(0,180,216,0.3);
+            transition: transform 0.3s;
+        }
+
+        .channel-avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .channel-name {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .name-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #00b4d8;
+        }
+
+        .channel-title {
+            font-family: 'Tajawal', sans-serif;
+            font-size: 3rem;
+            color: #00b4d8;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .channel-description {
+            font-size: 1.2rem;
+            color: #90e0ef;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .social-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 2rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            background: rgba(22, 33, 62, 0.8);
+            padding: 1.5rem;
+            border-radius: 10px;
+            min-width: 150px;
+            transition: transform 0.3s;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #00b4d8;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #90e0ef;
+            font-size: 1rem;
+        }
+
+        .featured-videos {
+            padding: 4rem 0;
+        }
+
+        .section-title {
+            font-family: 'Tajawal', sans-serif;
+            color: #00b4d8;
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+
+        .video-card {
+            background: #1a2634;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            background: #0d1b2a;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .video-actions {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .video-card:hover .video-actions {
+            opacity: 1;
+        }
+
+        .watch-youtube {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 0, 0, 0.9);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .watch-youtube:hover {
+            background: #ff0000;
+            transform: scale(1.05);
+            color: white;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-info {
+            padding: 1.5rem;
+        }
+
+        .video-title {
+            color: #fff;
+            margin: 0 0 1rem;
+            font-size: 1.1rem;
+            line-height: 1.4;
+        }
+
+        .video-meta {
+            display: flex;
+            gap: 1rem;
+            color: #8b9caf;
+            font-size: 0.9rem;
+        }
+
+        .video-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .video-meta i {
+            font-size: 1rem;
+            color: #4a90e2;
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #16213e 0%, #1a1a2e 100%);
+        }
+
+        .subscribe-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255,0,0,0.3);
+        }
+
+        .subscribe-button:hover {
+            background: #cc0000;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,0,0,0.4);
+            color: white;
+        }
+
+        .back-button {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            background: #00b4d8;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            transform: scale(1.1);
+            color: white;
+            background: #0096c7;
+        }
+
+        @media (max-width: 768px) {
+            .social-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .stat-item {
+                width: 100%;
+            }
+
+            .channel-title {
+                font-size: 2rem;
+            }
+
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero-section">
+        <div class="container">
+            <div class="channel-info" data-aos="fade-up">
+                <img src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="سالم رزق" class="channel-avatar">
+                <div class="channel-name">
+                    <img src="https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100&q=80" alt="gaming" class="name-icon">
+                    <h1 class="channel-title">سالم رزق</h1>
+                </div>
+                <p class="channel-description">مرحباً بكم في قناتي! أشارك معكم أفضل لحظات الألعاب والمحتوى الترفيهي المميز</p>
+                
+                <div class="social-stats">
+                    <div class="stat-item" data-aos="fade-up" data-aos-delay="200">
+                        <div class="stat-value">1.4K+</div>
+                        <div class="stat-label">مشترك</div>
+                    </div>
+                    <div class="stat-item" data-aos="fade-up" data-aos-delay="400">
+                        <div class="stat-value">90+</div>
+                        <div class="stat-label">فيديو</div>
+                    </div>
+                    <div class="stat-item" data-aos="fade-up" data-aos-delay="600">
+                        <div class="stat-value">680K+</div>
+                        <div class="stat-label">مشاهدة</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="featured-videos">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">أحدث الفيديوهات</h2>
+            <div class="video-grid">
+                <!-- فيديو 1 -->
+                <div class="video-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="video-wrapper">
+                        <div class="video-actions">
+                            <a href="https://youtu.be/MCToW6C2rns" class="watch-youtube" target="_blank">
+                                <i class="fab fa-youtube"></i> شاهد على يوتيوب
+                            </a>
+                        </div>
+                        <iframe src="https://www.youtube.com/embed/MCToW6C2rns" title="Simo Games Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Simo Games Video</h3>
+                        <div class="video-meta">
+                            <span><i class="far fa-calendar-alt"></i> حديثاً</span>
+                            <span><i class="far fa-eye"></i> مشاهدات</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- فيديو 2 -->
+                <div class="video-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="video-wrapper">
+                        <div class="video-actions">
+                            <a href="https://youtu.be/D2jY_8QWJy4" class="watch-youtube" target="_blank">
+                                <i class="fab fa-youtube"></i> شاهد على يوتيوب
+                            </a>
+                        </div>
+                        <iframe src="https://www.youtube.com/embed/D2jY_8QWJy4" title="Simo Games Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Simo Games Video</h3>
+                        <div class="video-meta">
+                            <span><i class="far fa-calendar-alt"></i> حديثاً</span>
+                            <span><i class="far fa-eye"></i> مشاهدات</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- فيديو 3 -->
+                <div class="video-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="video-wrapper">
+                        <div class="video-actions">
+                            <a href="https://youtu.be/lXqX-FVX5gw" class="watch-youtube" target="_blank">
+                                <i class="fab fa-youtube"></i> شاهد على يوتيوب
+                            </a>
+                        </div>
+                        <iframe src="https://www.youtube.com/embed/lXqX-FVX5gw" title="Simo Games Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Simo Games Video</h3>
+                        <div class="video-meta">
+                            <span><i class="far fa-calendar-alt"></i> حديثاً</span>
+                            <span><i class="far fa-eye"></i> مشاهدات</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- فيديو 4 -->
+                <div class="video-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="video-wrapper">
+                        <div class="video-actions">
+                            <a href="https://youtu.be/Tw4hCarnRcY" class="watch-youtube" target="_blank">
+                                <i class="fab fa-youtube"></i> شاهد على يوتيوب
+                            </a>
+                        </div>
+                        <iframe src="https://www.youtube.com/embed/Tw4hCarnRcY" title="Simo Games Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Simo Games Video</h3>
+                        <div class="video-meta">
+                            <span><i class="far fa-calendar-alt"></i> حديثاً</span>
+                            <span><i class="far fa-eye"></i> مشاهدات</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- فيديو 5 -->
+                <div class="video-card" data-aos="fade-up" data-aos-delay="500">
+                    <div class="video-wrapper">
+                        <div class="video-actions">
+                            <a href="https://youtu.be/qwndxOenuBE" class="watch-youtube" target="_blank">
+                                <i class="fab fa-youtube"></i> شاهد على يوتيوب
+                            </a>
+                        </div>
+                        <iframe src="https://www.youtube.com/embed/qwndxOenuBE" title="Simo Games Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Simo Games Video</h3>
+                        <div class="video-meta">
+                            <span><i class="far fa-calendar-alt"></i> حديثاً</span>
+                            <span><i class="far fa-eye"></i> مشاهدات</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- فيديو 6 -->
+                <div class="video-card" data-aos="fade-up" data-aos-delay="600">
+                    <div class="video-wrapper">
+                        <div class="video-actions">
+                            <a href="https://youtu.be/S3HgpEgKAZc" class="watch-youtube" target="_blank">
+                                <i class="fab fa-youtube"></i> شاهد على يوتيوب
+                            </a>
+                        </div>
+                        <iframe src="https://www.youtube.com/embed/S3HgpEgKAZc" title="Simo Games Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Simo Games Video</h3>
+                        <div class="video-meta">
+                            <span><i class="far fa-calendar-alt"></i> حديثاً</span>
+                            <span><i class="far fa-eye"></i> مشاهدات</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- فيديو 7 -->
+                <div class="video-card" data-aos="fade-up" data-aos-delay="700">
+                    <div class="video-wrapper">
+                        <div class="video-actions">
+                            <a href="https://youtu.be/KbPBltA7zYo" class="watch-youtube" target="_blank">
+                                <i class="fab fa-youtube"></i> شاهد على يوتيوب
+                            </a>
+                        </div>
+                        <iframe src="https://www.youtube.com/embed/KbPBltA7zYo" title="Simo Games Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Simo Games Video</h3>
+                        <div class="video-meta">
+                            <span><i class="far fa-calendar-alt"></i> حديثاً</span>
+                            <span><i class="far fa-eye"></i> مشاهدات</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- فيديو 8 -->
+                <div class="video-card" data-aos="fade-up" data-aos-delay="800">
+                    <div class="video-wrapper">
+                        <div class="video-actions">
+                            <a href="https://youtu.be/zgg19yRlMy4" class="watch-youtube" target="_blank">
+                                <i class="fab fa-youtube"></i> شاهد على يوتيوب
+                            </a>
+                        </div>
+                        <iframe src="https://www.youtube.com/embed/zgg19yRlMy4" title="Simo Games Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Simo Games Video</h3>
+                        <div class="video-meta">
+                            <span><i class="far fa-calendar-alt"></i> حديثاً</span>
+                            <span><i class="far fa-eye"></i> مشاهدات</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- فيديو 9 -->
+                <div class="video-card" data-aos="fade-up" data-aos-delay="900">
+                    <div class="video-wrapper">
+                        <div class="video-actions">
+                            <a href="https://youtu.be/81z6tcwWzz4" class="watch-youtube" target="_blank">
+                                <i class="fab fa-youtube"></i> شاهد على يوتيوب
+                            </a>
+                        </div>
+                        <iframe src="https://www.youtube.com/embed/81z6tcwWzz4" title="Simo Games Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Simo Games Video</h3>
+                        <div class="video-meta">
+                            <span><i class="far fa-calendar-alt"></i> حديثاً</span>
+                            <span><i class="far fa-eye"></i> مشاهدات</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- فيديو 10 -->
+                <div class="video-card" data-aos="fade-up" data-aos-delay="1000">
+                    <div class="video-wrapper">
+                        <div class="video-actions">
+                            <a href="https://youtu.be/NEMlt-QOE9o" class="watch-youtube" target="_blank">
+                                <i class="fab fa-youtube"></i> شاهد على يوتيوب
+                            </a>
+                        </div>
+                        <iframe src="https://www.youtube.com/embed/NEMlt-QOE9o" title="Simo Games Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Simo Games Video</h3>
+                        <div class="video-meta">
+                            <span><i class="far fa-calendar-alt"></i> حديثاً</span>
+                            <span><i class="far fa-eye"></i> مشاهدات</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- فيديو 11 -->
+                <div class="video-card" data-aos="fade-up" data-aos-delay="1100">
+                    <div class="video-wrapper">
+                        <div class="video-actions">
+                            <a href="https://youtu.be/k5FCRCEdT6A" class="watch-youtube" target="_blank">
+                                <i class="fab fa-youtube"></i> شاهد على يوتيوب
+                            </a>
+                        </div>
+                        <iframe src="https://www.youtube.com/embed/k5FCRCEdT6A" title="Simo Games Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Simo Games Video</h3>
+                        <div class="video-meta">
+                            <span><i class="far fa-calendar-alt"></i> حديثاً</span>
+                            <span><i class="far fa-eye"></i> مشاهدات</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- فيديو 12 -->
+                <div class="video-card" data-aos="fade-up" data-aos-delay="1200">
+                    <div class="video-wrapper">
+                        <div class="video-actions">
+                            <a href="https://youtu.be/zRvnurAdooE" class="watch-youtube" target="_blank">
+                                <i class="fab fa-youtube"></i> شاهد على يوتيوب
+                            </a>
+                        </div>
+                        <iframe src="https://www.youtube.com/embed/zRvnurAdooE" title="Simo Games Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Simo Games Video</h3>
+                        <div class="video-meta">
+                            <span><i class="far fa-calendar-alt"></i> حديثاً</span>
+                            <span><i class="far fa-eye"></i> مشاهدات</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- فيديو 13 -->
+                <div class="video-card" data-aos="fade-up" data-aos-delay="1300">
+                    <div class="video-wrapper">
+                        <div class="video-actions">
+                            <a href="https://youtu.be/hax4Sxn4Tzk" class="watch-youtube" target="_blank">
+                                <i class="fab fa-youtube"></i> شاهد على يوتيوب
+                            </a>
+                        </div>
+                        <iframe src="https://www.youtube.com/embed/hax4Sxn4Tzk" title="Simo Games Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Simo Games Video</h3>
+                        <div class="video-meta">
+                            <span><i class="far fa-calendar-alt"></i> حديثاً</span>
+                            <span><i class="far fa-eye"></i> مشاهدات</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- فيديو 14 -->
+                <div class="video-card" data-aos="fade-up" data-aos-delay="1400">
+                    <div class="video-wrapper">
+                        <div class="video-actions">
+                            <a href="https://youtu.be/GBThbUPRGMA" class="watch-youtube" target="_blank">
+                                <i class="fab fa-youtube"></i> شاهد على يوتيوب
+                            </a>
+                        </div>
+                        <iframe src="https://www.youtube.com/embed/GBThbUPRGMA" title="Simo Games Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Simo Games Video</h3>
+                        <div class="video-meta">
+                            <span><i class="far fa-calendar-alt"></i> حديثاً</span>
+                            <span><i class="far fa-eye"></i> مشاهدات</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- فيديو 15 -->
+                <div class="video-card" data-aos="fade-up" data-aos-delay="1500">
+                    <div class="video-wrapper">
+                        <div class="video-actions">
+                            <a href="https://youtu.be/KIngNOLoYWA" class="watch-youtube" target="_blank">
+                                <i class="fab fa-youtube"></i> شاهد على يوتيوب
+                            </a>
+                        </div>
+                        <iframe src="https://www.youtube.com/embed/KIngNOLoYWA" title="Simo Games Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Simo Games Video</h3>
+                        <div class="video-meta">
+                            <span><i class="far fa-calendar-alt"></i> حديثاً</span>
+                            <span><i class="far fa-eye"></i> مشاهدات</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- فيديو 16 -->
+                <div class="video-card" data-aos="fade-up" data-aos-delay="1600">
+                    <div class="video-wrapper">
+                        <div class="video-actions">
+                            <a href="https://youtu.be/vwa7vSsH1Ow" class="watch-youtube" target="_blank">
+                                <i class="fab fa-youtube"></i> شاهد على يوتيوب
+                            </a>
+                        </div>
+                        <iframe src="https://www.youtube.com/embed/vwa7vSsH1Ow" title="Simo Games Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Simo Games Video</h3>
+                        <div class="video-meta">
+                            <span><i class="far fa-calendar-alt"></i> حديثاً</span>
+                            <span><i class="far fa-eye"></i> مشاهدات</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- فيديو 17 -->
+                <div class="video-card" data-aos="fade-up" data-aos-delay="1700">
+                    <div class="video-wrapper">
+                        <div class="video-actions">
+                            <a href="https://youtu.be/m1GYHT3w3u8" class="watch-youtube" target="_blank">
+                                <i class="fab fa-youtube"></i> شاهد على يوتيوب
+                            </a>
+                        </div>
+                        <iframe src="https://www.youtube.com/embed/m1GYHT3w3u8" title="Simo Games Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Simo Games Video</h3>
+                        <div class="video-meta">
+                            <span><i class="far fa-calendar-alt"></i> حديثاً</span>
+                            <span><i class="far fa-eye"></i> مشاهدات</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- فيديو 18 -->
+                <div class="video-card" data-aos="fade-up" data-aos-delay="1800">
+                    <div class="video-wrapper">
+                        <div class="video-actions">
+                            <a href="https://youtu.be/pKJTzM7LNNc" class="watch-youtube" target="_blank">
+                                <i class="fab fa-youtube"></i> شاهد على يوتيوب
+                            </a>
+                        </div>
+                        <iframe src="https://www.youtube.com/embed/pKJTzM7LNNc" title="Simo Games Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Simo Games Video</h3>
+                        <div class="video-meta">
+                            <span><i class="far fa-calendar-alt"></i> حديثاً</span>
+                            <span><i class="far fa-eye"></i> مشاهدات</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- فيديو 19 -->
+                <div class="video-card" data-aos="fade-up" data-aos-delay="1900">
+                    <div class="video-wrapper">
+                        <div class="video-actions">
+                            <a href="https://youtu.be/0kZl_k0yjPA" class="watch-youtube" target="_blank">
+                                <i class="fab fa-youtube"></i> شاهد على يوتيوب
+                            </a>
+                        </div>
+                        <iframe src="https://www.youtube.com/embed/0kZl_k0yjPA" title="Simo Games Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Simo Games Video</h3>
+                        <div class="video-meta">
+                            <span><i class="far fa-calendar-alt"></i> حديثاً</span>
+                            <span><i class="far fa-eye"></i> مشاهدات</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <div data-aos="fade-up">
+                <h2 class="section-title">انضم إلى مجتمعنا!</h2>
+                <a href="https://www.youtube.com/channel/UC1SAD9vuz09tM1kKRfKjNLQ" class="subscribe-button" target="_blank">
+                    <i class="fab fa-youtube"></i>
+                    اشترك في القناة
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <a href="index.html" class="back-button" title="العودة للصفحة الرئيسية">
+        <i class="fas fa-home"></i>
+    </a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+    </script>
+</body>
+</html>

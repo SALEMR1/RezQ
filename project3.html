@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="معرض تصاميم احترافية">
+    <meta name="referrer" content="no-referrer">
+    <meta http-equiv="Permissions-Policy" content="clipboard-write=()">
+    <title>استوديو التصميم الإبداعي</title>
+    
+    <!-- الخطوط -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- المكتبات CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        :root {
+            --primary-color: #2d3436;
+            --accent-color: #6c5ce7;
+            --text-color: #2d3436;
+            --light-bg: #f5f6fa;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-color);
+        }
+
+        /* القسم الرئيسي */
+        .hero-section {
+            background: linear-gradient(135deg, #6c5ce7 0%, #a363d9 100%);
+            padding: 6rem 0;
+            color: white;
+            text-align: center;
+            border-radius: 0 0 50px 50px;
+            margin-bottom: 4rem;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* قسم الخدمات */
+        .services-section {
+            padding: 4rem 0;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 4rem;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .service-icon {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        /* معرض الأعمال */
+        .gallery-container {
+            padding: 2rem 0;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            cursor: pointer;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-caption {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .gallery-caption h5 {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .gallery-caption span {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* نافذة عرض الصور */
+        .image-viewer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .image-viewer.active {
+            opacity: 1;
+            display: flex;
+        }
+
+        .expanded-image {
+            max-width: 90%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 8px;
+            opacity: 0;
+            transform: scale(0.95);
+            transition: all 0.3s ease;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .expanded-image.loaded {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .close-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10000;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--primary-color);
+            font-weight: 800;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: var(--accent-color);
+            margin: 1rem auto;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- القسم الرئيسي -->
+    <section class="hero-section" data-aos="fade-down">
+        <div class="container">
+            <h1 class="hero-title">استوديو التصميم الإبداعي</h1>
+            <p class="hero-subtitle">نحول أفكارك إلى تصاميم مبتكرة تجمع بين الإبداع والاحترافية</p>
+        </div>
+    </section>
+
+    <!-- قسم الخدمات -->
+    <section class="services-section">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">خدماتنا</h2>
+            <div class="row">
+                <div class="col-md-3" data-aos="fade-up" data-aos-delay="100">
+                    <div class="service-card">
+                        <div class="service-icon">🎨</div>
+                        <h3>تصميم الهوية البصرية</h3>
+                        <p>تصميم هوية بصرية متكاملة تعكس روح علامتك التجارية</p>
+                    </div>
+                </div>
+                <div class="col-md-3" data-aos="fade-up" data-aos-delay="200">
+                    <div class="service-card">
+                        <div class="service-icon">✨</div>
+                        <h3>تصميم الشعارات</h3>
+                        <p>تصميم شعارات مميزة تترك انطباعاً لا يُنسى</p>
+                    </div>
+                </div>
+                <div class="col-md-3" data-aos="fade-up" data-aos-delay="300">
+                    <div class="service-card">
+                        <div class="service-icon">📱</div>
+                        <h3>تصميم السوشيال ميديا</h3>
+                        <p>تصاميم جذابة لمنصات التواصل الاجتماعي</p>
+                    </div>
+                </div>
+                <div class="col-md-3" data-aos="fade-up" data-aos-delay="400">
+                    <div class="service-card">
+                        <div class="service-icon">🖨️</div>
+                        <h3>تصميم المطبوعات</h3>
+                        <p>تصميم مطبوعات احترافية لكافة احتياجاتك</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- معرض الأعمال -->
+    <section class="gallery-section">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">معرض أعمالنا</h2>
+            <div class="row" id="gallery">
+                <!-- البوستر الرئيسي -->
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('البوستر الخاص بي.jpg')">
+                        <img src="البوستر الخاص بي.jpg" alt="تصميم بوستر احترافي" data-src="البوستر الخاص بي.jpg">
+                        <div class="gallery-caption">
+                            <h5>تصميم بوستر احترافي</h5>
+                            <span>تصميم إبداعي متميز</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- تصميمات JPG -->
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (1).jpg')">
+                        <img src="تصميمات/تصميم (1).jpg" alt="تصميم 1" data-src="تصميمات/تصميم (1).jpg">
+                        <div class="gallery-caption">
+                            <h5>تصميم إبداعي</h5>
+                            <span>تصميم متميز</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (2).jpg')">
+                        <img src="تصميمات/تصميم (2).jpg" alt="تصميم 2" data-src="تصميمات/تصميم (2).jpg">
+                        <div class="gallery-caption">
+                            <h5>تصميم هوية</h5>
+                            <span>هوية بصرية</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (3).jpg')">
+                        <img src="تصميمات/تصميم (3).jpg" alt="تصميم 3" data-src="تصميمات/تصميم (3).jpg">
+                        <div class="gallery-caption">
+                            <h5>تصميم شعار</h5>
+                            <span>شعار احترافي</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- تصميمات PNG -->
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (1).png')">
+                        <img src="تصميمات/تصميم (1).png" alt="تصميم PNG 1" data-src="تصميمات/تصميم (1).png">
+                        <div class="gallery-caption">
+                            <h5>تصميم جرافيك</h5>
+                            <span>تصميم رقمي</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (2).png')">
+                        <img src="تصميمات/تصميم (2).png" alt="تصميم PNG 2" data-src="تصميمات/تصميم (2).png">
+                        <div class="gallery-caption">
+                            <h5>تصميم ملصق</h5>
+                            <span>ملصق إعلاني</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- المزيد من التصميمات -->
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (4).jpg')">
+                        <img src="تصميمات/تصميم (4).jpg" alt="تصميم 4" data-src="تصميمات/تصميم (4).jpg">
+                        <div class="gallery-caption">
+                            <h5>تصميم بوستر</h5>
+                            <span>بوستر إعلاني</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (5).jpg')">
+                        <img src="تصميمات/تصميم (5).jpg" alt="تصميم 5" data-src="تصميمات/تصميم (5).jpg">
+                        <div class="gallery-caption">
+                            <h5>تصميم كارت</h5>
+                            <span>كارت شخصي</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (6).jpg')">
+                        <img src="تصميمات/تصميم (6).jpg" alt="تصميم 6" data-src="تصميمات/تصميم (6).jpg">
+                        <div class="gallery-caption">
+                            <h5>تصميم مطبوعات</h5>
+                            <span>مواد تسويقية</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (7).jpg')">
+                        <img src="تصميمات/تصميم (7).jpg" alt="تصميم 7" data-src="تصميمات/تصميم (7).jpg">
+                        <div class="gallery-caption">
+                            <h5>تصميم سوشيال ميديا</h5>
+                            <span>محتوى رقمي</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (8).jpg')">
+                        <img src="تصميمات/تصميم (8).jpg" alt="تصميم 8" data-src="تصميمات/تصميم (8).jpg">
+                        <div class="gallery-caption">
+                            <h5>تصميم هوية</h5>
+                            <span>هوية تجارية</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (9).jpg')">
+                        <img src="تصميمات/تصميم (9).jpg" alt="تصميم 9" data-src="تصميمات/تصميم (9).jpg">
+                        <div class="gallery-caption">
+                            <h5>تصميم شعار</h5>
+                            <span>شعار مؤسسة</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- تصميمات إضافية -->
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (10).jpg')">
+                        <img src="تصميمات/تصميم (10).jpg" alt="تصميم 10" data-src="تصميمات/تصميم (10).jpg">
+                        <div class="gallery-caption">
+                            <h5>تصميم بروشور</h5>
+                            <span>بروشور تعريفي</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- باقي التصميمات -->
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (15).jpg')">
+                        <img src="تصميمات/تصميم (15).jpg" alt="تصميم 15" data-src="تصميمات/تصميم (15).jpg">
+                        <div class="gallery-caption">
+                            <h5>تصميم ملصق</h5>
+                            <span>ملصق إعلاني</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (20).jpg')">
+                        <img src="تصميمات/تصميم (20).jpg" alt="تصميم 20" data-src="تصميمات/تصميم (20).jpg">
+                        <div class="gallery-caption">
+                            <h5>تصميم هوية</h5>
+                            <span>هوية متكاملة</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (25).jpg')">
+                        <img src="تصميمات/تصميم (25).jpg" alt="تصميم 25" data-src="تصميمات/تصميم (25).jpg">
+                        <div class="gallery-caption">
+                            <h5>تصميم شعار</h5>
+                            <span>شعار احترافي</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- تصميمات PNG الإضافية -->
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (3).png')">
+                        <img src="تصميمات/تصميم (3).png" alt="تصميم PNG 3" data-src="تصميمات/تصميم (3).png">
+                        <div class="gallery-caption">
+                            <h5>تصميم جرافيك</h5>
+                            <span>تصميم رقمي</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (4).png')">
+                        <img src="تصميمات/تصميم (4).png" alt="تصميم PNG 4" data-src="تصميمات/تصميم (4).png">
+                        <div class="gallery-caption">
+                            <h5>تصميم ملصق</h5>
+                            <span>ملصق إعلاني</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (5).png')">
+                        <img src="تصميمات/تصميم (5).png" alt="تصميم PNG 5" data-src="تصميمات/تصميم (5).png">
+                        <div class="gallery-caption">
+                            <h5>تصميم بوستر</h5>
+                            <span>بوستر إعلاني</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- باقي التصميمات JPG -->
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (11).jpg')">
+                        <img src="تصميمات/تصميم (11).jpg" alt="تصميم 11" data-src="تصميمات/تصميم (11).jpg">
+                        <div class="gallery-caption">
+                            <h5>تصميم بوستر</h5>
+                            <span>بوستر إعلاني</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (12).jpg')">
+                        <img src="تصميمات/تصميم (12).jpg" alt="تصميم 12" data-src="تصميمات/تصميم (12).jpg">
+                        <div class="gallery-caption">
+                            <h5>تصميم شعار</h5>
+                            <span>شعار مؤسسة</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (13).jpg')">
+                        <img src="تصميمات/تصميم (13).jpg" alt="تصميم 13" data-src="تصميمات/تصميم (13).jpg">
+                        <div class="gallery-caption">
+                            <h5>تصميم هوية</h5>
+                            <span>هوية بصرية</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (14).jpg')">
+                        <img src="تصميمات/تصميم (14).jpg" alt="تصميم 14" data-src="تصميمات/تصميم (14).jpg">
+                        <div class="gallery-caption">
+                            <h5>تصميم بوستر</h5>
+                            <span>بوستر إعلاني</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (16).jpg')">
+                        <img src="تصميمات/تصميم (16).jpg" alt="تصميم 16" data-src="تصميمات/تصميم (16).jpg">
+                        <div class="gallery-caption">
+                            <h5>تصميم شعار</h5>
+                            <span>شعار مؤسسة</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (17).jpg')">
+                        <img src="تصميمات/تصميم (17).jpg" alt="تصميم 17" data-src="تصميمات/تصميم (17).jpg">
+                        <div class="gallery-caption">
+                            <h5>تصميم هوية</h5>
+                            <span>هوية متكاملة</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (18).jpg')">
+                        <img src="تصميمات/تصميم (18).jpg" alt="تصميم 18" data-src="تصميمات/تصميم (18).jpg">
+                        <div class="gallery-caption">
+                            <h5>تصميم بوستر</h5>
+                            <span>بوستر إعلاني</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (19).jpg')">
+                        <img src="تصميمات/تصميم (19).jpg" alt="تصميم 19" data-src="تصميمات/تصميم (19).jpg">
+                        <div class="gallery-caption">
+                            <h5>تصميم شعار</h5>
+                            <span>شعار مؤسسة</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (21).jpg')">
+                        <img src="تصميمات/تصميم (21).jpg" alt="تصميم 21" data-src="تصميمات/تصميم (21).jpg">
+                        <div class="gallery-caption">
+                            <h5>تصميم هوية</h5>
+                            <span>هوية متكاملة</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (22).jpg')">
+                        <img src="تصميمات/تصميم (22).jpg" alt="تصميم 22" data-src="تصميمات/تصميم (22).jpg">
+                        <div class="gallery-caption">
+                            <h5>تصميم بوستر</h5>
+                            <span>بوستر إعلاني</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (23).jpg')">
+                        <img src="تصميمات/تصميم (23).jpg" alt="تصميم 23" data-src="تصميمات/تصميم (23).jpg">
+                        <div class="gallery-caption">
+                            <h5>تصميم شعار</h5>
+                            <span>شعار مؤسسة</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (24).jpg')">
+                        <img src="تصميمات/تصميم (24).jpg" alt="تصميم 24" data-src="تصميمات/تصميم (24).jpg">
+                        <div class="gallery-caption">
+                            <h5>تصميم هوية</h5>
+                            <span>هوية متكاملة</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (26).jpg')">
+                        <img src="تصميمات/تصميم (26).jpg" alt="تصميم 26" data-src="تصميمات/تصميم (26).jpg">
+                        <div class="gallery-caption">
+                            <h5>تصميم بوستر</h5>
+                            <span>بوستر إعلاني</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (27).jpg')">
+                        <img src="تصميمات/تصميم (27).jpg" alt="تصميم 27" data-src="تصميمات/تصميم (27).jpg">
+                        <div class="gallery-caption">
+                            <h5>تصميم شعار</h5>
+                            <span>شعار مؤسسة</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (28).jpg')">
+                        <img src="تصميمات/تصميم (28).jpg" alt="تصميم 28" data-src="تصميمات/تصميم (28).jpg">
+                        <div class="gallery-caption">
+                            <h5>تصميم هوية</h5>
+                            <span>هوية متكاملة</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6" data-aos="fade-up">
+                    <div class="gallery-item" onclick="openPreview('تصميمات/تصميم (29).jpg')">
+                        <img src="تصميمات/تصميم (29).jpg" alt="تصميم 29" data-src="تصميمات/تصميم (29).jpg">
+                        <div class="gallery-caption">
+                            <h5>تصميم بوستر</h5>
+                            <span>بوستر إعلاني</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- نافذة عرض الصور -->
+    <div class="image-viewer" id="imageViewer">
+        <span class="close-btn" onclick="closePreview()">&times;</span>
+        <img id="expandedImage" class="expanded-image" onclick="event.stopPropagation()">
+    </div>
+
+    <!-- المكتبات JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <script>
+        // تهيئة AOS
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100,
+            easing: 'ease-out-cubic'
+        });
+
+        // تحسين تحميل الصور
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('img[data-src]');
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.onload = () => {
+                            img.classList.add('loaded');
+                            img.style.opacity = '1';
+                        };
+                        observer.unobserve(img);
+                    }
+                });
+            }, {
+                root: null,
+                rootMargin: '50px',
+                threshold: 0.1
+            });
+
+            images.forEach(img => {
+                img.style.opacity = '0';
+                img.style.transition = 'opacity 0.5s ease';
+                imageObserver.observe(img);
+            });
+        });
+
+        // دالة عرض الصور المحسنة
+        function openPreview(src) {
+            const viewer = document.getElementById('imageViewer');
+            const image = document.getElementById('expandedImage');
+            
+            if (viewer && image) {
+                image.style.opacity = '0';
+                image.style.transform = 'scale(0.95)';
+                
+                // تحميل الصورة
+                image.src = src;
+                image.onload = () => {
+                    viewer.style.display = 'flex';
+                    requestAnimationFrame(() => {
+                        viewer.style.opacity = '1';
+                        image.style.opacity = '1';
+                        image.style.transform = 'scale(1)';
+                        image.classList.add('loaded');
+                    });
+                };
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closePreview() {
+            const viewer = document.getElementById('imageViewer');
+            const image = document.getElementById('expandedImage');
+            
+            if (viewer && image) {
+                viewer.style.opacity = '0';
+                image.style.opacity = '0';
+                image.style.transform = 'scale(0.95)';
+                
+                setTimeout(() => {
+                    viewer.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                    image.classList.remove('loaded');
+                }, 300);
+            }
+        }
+
+        // إغلاق العرض عند النقر خارج الصورة
+        document.getElementById('imageViewer').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePreview();
+            }
+        });
+
+        // إغلاق العرض عند الضغط على ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePreview();
+            }
+        });
+
+        // منع التمرير عند فتح الصورة
+        document.addEventListener('wheel', function(e) {
+            if (document.getElementById('imageViewer').style.display === 'flex') {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        // تحسين أداء التمرير
+        let isScrolling;
+        window.addEventListener('scroll', function() {
+            window.clearTimeout(isScrolling);
+            isScrolling = setTimeout(function() {
+                const scrolled = window.scrollY;
+                document.querySelectorAll('.gallery-item').forEach(item => {
+                    const rect = item.getBoundingClientRect();
+                    if (rect.top < window.innerHeight && rect.bottom > 0) {
+                        item.style.transform = 'translateY(0)';
+                        item.style.opacity = '1';
+                    }
+                });
+            }, 66);
+        }, false);
+    </script>
+</body>
+</html>
